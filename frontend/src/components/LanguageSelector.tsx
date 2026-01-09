@@ -1,6 +1,6 @@
-import { useI18n } from '../lib/i18n'
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
-import { Badge } from '../ui/badge'
+import { useI18n } from '@/lib/i18n'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import * as React from 'react'
 
 const options = [

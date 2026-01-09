@@ -1,9 +1,62 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../src/**/*.{ts,tsx}";
+@source "../index.html";
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+@theme {
+  /* Cyberpunk Neon Theme */
+  --color-background: hsl(280 70% 12%);  /* Deep purple */
+  --color-foreground: hsl(150 100% 85%); /* Neon mint */
+  --color-muted: hsl(280 50% 20%);       /* Dark purple muted */
+  --color-muted-foreground: hsl(280 30% 60%); /* Light purple */
+  --color-accent: hsl(45 100% 60%);      /* Electric yellow */
+  --color-accent-foreground: hsl(280 80% 10%); /* Dark purple text */
+  --color-primary: hsl(330 100% 65%);    /* Hot pink/magenta */
+  --color-primary-foreground: hsl(280 80% 10%); /* Dark text */
+  --color-destructive: hsl(15 100% 65%); /* Neon orange/coral */
+  --color-destructive-foreground: hsl(280 80% 10%);
+  --color-card: hsl(280 60% 15%);        /* Slightly lighter purple */
+  --color-card-foreground: hsl(180 100% 80%); /* Cyan text */
+  --color-border: hsl(330 80% 50%);      /* Hot pink border */
+  --color-input: hsl(280 50% 20%);
+  --color-ring: hsl(150 100% 60%);       /* Neon green ring */
+}
 
 :root {
-  color-scheme: light dark;
+  /* Matching utility colors */
+  --background: 280 70% 12%;
+  --foreground: 150 100% 85%;
+  --muted: 280 50% 20%;
+  --muted-foreground: 280 30% 60%;
+  --accent: 45 100% 60%;
+  --accent-foreground: 280 80% 10%;
+  --primary: 330 100% 65%;
+  --primary-foreground: 280 80% 10%;
+  --destructive: 15 100% 65%;
+  --destructive-foreground: 280 80% 10%;
+  --card: 280 60% 15%;
+  --card-foreground: 180 100% 80%;
+  --border: 330 80% 50%;
+  --input: 280 50% 20%;
+  --ring: 150 100% 60%;
+  color-scheme: dark;
+}
+
+.dark {
+  /* Even more intense dark mode */
+  --background: 280 80% 8%;
+  --foreground: 150 100% 90%;
+  --muted: 280 60% 15%;
+  --muted-foreground: 280 40% 70%;
+  --accent: 45 100% 70%;
+  --accent-foreground: 280 90% 5%;
+  --primary: 330 100% 70%;
+  --primary-foreground: 280 90% 5%;
+  --destructive: 15 100% 70%;
+  --destructive-foreground: 280 90% 5%;
+  --card: 280 70% 10%;
+  --card-foreground: 180 100% 85%;
 }
 
 html, body, #root {
@@ -12,5 +65,13 @@ html, body, #root {
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  text-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  text-shadow: 0 0 30px rgba(255, 0, 255, 0.5), 0 0 60px rgba(0, 255, 255, 0.3);
+  letter-spacing: 0.05em;
 }

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { fetchHealthStatus } from '@/lib/api'
-import { Card, CardHeader, CardTitle, CardContent } from '@/ui/card'
-import { Badge } from '@/ui/badge'
-import { Alert, AlertTitle, AlertDescription } from '@/ui/alert'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 
 export default function HealthCheck() {
   const { data, isLoading, isError, error } = useQuery({

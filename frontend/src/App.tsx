@@ -12,7 +12,7 @@ export default function App() {
   }, [])
 
   return (
-    <div className="p-6">
+    <div className="min-h-screen bg-background text-foreground p-6">
       <nav className="mb-6 flex items-center justify-between">
         <div className="flex gap-4">
           <Link className="underline" to="/">{t('nav.home')}</Link>
