@@ -11,23 +11,14 @@ A production-ready starter that pairs a modern React frontend with a Django back
 ## Requirements
 - Python 3.14, Node.js 22, make (Unix‑like environments)
 
-## Quick Start
-1) Rebrand and configure ports
+## Quick Start (One Step)
+Create a new project (copies template, rebrands placeholders, writes env files, installs deps via Make):
 ```
-./setup.py
+./create-project.sh
 ```
-2) Install dependencies
-```
-make setup
-```
-3) Start (clean refresh: kills old processes, resets DB, migrates, loads fixtures)
-```
-./run.sh
-```
-4) Run E2E tests
-```
-./run-e2e.sh --all
-```
+Then in your project directory:
+- Start/refresh: `./run.sh`
+- E2E tests: `./run-e2e.sh --all`
 
 ## Health Scaffolding (Important)
 This template ships with a health check pattern and a sample record loaded via fixtures. It includes an intentional failing E2E test to ensure you remove/replace this scaffolding before release.

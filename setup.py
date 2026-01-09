@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-# setup.py - MyProject Template Setup (rebranding)
+# setup.py - MyProject Template Setup (copy + rebrand + install)
 
 import os
 import re
 import sys
+import shutil
+import subprocess
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -68,6 +70,47 @@ def update_env_file(example_path: Path, env_path: Path, updates: dict):
         print(f"[WARN] Write .env failed: {env_path}: {e}")
 
 
+# --- copy helpers ---
+EXCLUDE_DIRS = {
+    ".git",
+    "node_modules",
+    ".venv",
+    "__pycache__",
+    "dist",
+    "build",
+    "playwright-report",
+    "test-results",
+}
+EXCLUDE_FILES = {"setup.py", "create-project.sh"}
+
+
+def should_exclude(path: Path) -> bool:
+    name = path.name
+    if name in EXCLUDE_FILES:
+        return True
+    parts = set(p.name for p in path.parents)
+    if any(d in parts for d in EXCLUDE_DIRS):
+        return True
+    return False
+
+
+def copy_template(src: Path, dst: Path):
+    if not dst.exists():
+        dst.mkdir(parents=True, exist_ok=True)
+    for root, dirs, files in os.walk(src):
+        root_path = Path(root)
+        # Skip excluded dirs
+        dirs[:] = [d for d in dirs if d not in EXCLUDE_DIRS and not d.startswith(".")]
+        for f in files:
+            fp = root_path / f
+            if should_exclude(fp):
+                continue
+            rel = fp.relative_to(src)
+            target = dst / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(fp, target)
+
+
 # --- main flow ---
 if __name__ == "__main__":
     print("\n🎨 MyProject Template Setup\n")
@@ -99,6 +142,11 @@ if __name__ == "__main__":
     pascal = to_pascal_case(project_name)
     upper_snake = to_upper_snake_case(project_name)
 
+    default_dst = (BASE_DIR / kebab).resolve()
+    dest_in = input(f"Destination directory (default: {default_dst}): ").strip()
+    target_dir = Path(dest_in) if dest_in else default_dst
+    target_dir = target_dir.resolve()
+
     print("\nName variations:")
     print(f"  my-project (kebab): {kebab}")
     print(f"  myproject (snake): {snake}")
@@ -107,12 +155,19 @@ if __name__ == "__main__":
     print("Ports:")
     print(f"  Backend: {backend_port}")
     print(f"  Frontend: {frontend_port}")
+    print(f"Destination: {target_dir}")
 
-    confirm = input("Proceed with rebranding? (y/n): ").strip().lower()
+    confirm = input("Proceed with copy + rebrand + install? (y/n): ").strip().lower()
     if confirm != "y":
         print("Aborted.")
         sys.exit(0)
 
+    # Copy template excluding setup and wrapper
+    print("\n[SETUP] Copying template files...")
+    copy_template(BASE_DIR, target_dir)
+
+    # Apply replacements to copied files
+    print("[SETUP] Applying rebranding placeholders...")
     replacements = {
         "myproject": snake,
         "my-project": kebab,
@@ -121,7 +176,6 @@ if __name__ == "__main__":
         "My Project": project_name,
     }
 
-    # Process files
     exts = {
         ".py",
         ".json",
@@ -139,26 +193,27 @@ if __name__ == "__main__":
         ".sh",
         ".env.example",
     }
-    skip_dirs = {"node_modules", ".venv", "__pycache__", "dist", "build"}
+    skip_dirs = {"node_modules", ".venv", "__pycache__", "dist", "build", ".git"}
     count = 0
-    for root, dirs, files in os.walk(BASE_DIR):
-        # Skip hidden dirs and specified skips
+    for root, dirs, files in os.walk(target_dir):
         dirs[:] = [d for d in dirs if not d.startswith(".") and d not in skip_dirs]
         for f in files:
             p = Path(root) / f
+            if p.name in EXCLUDE_FILES:
+                continue
             if p.suffix in exts:
                 replace_in_file(p, replacements)
                 count += 1
     print(f"Processed files: {count}")
 
-    # Configure env files
-    backend_example = BASE_DIR / "backend" / ".env.example"
-    frontend_example = BASE_DIR / "frontend" / ".env.example"
-    e2e_example = BASE_DIR / "e2e-tests" / ".env.example"
+    # Configure env files in target
+    backend_example = target_dir / "backend" / ".env.example"
+    frontend_example = target_dir / "frontend" / ".env.example"
+    e2e_example = target_dir / "e2e-tests" / ".env.example"
 
     update_env_file(
         backend_example,
-        BASE_DIR / "backend" / ".env",
+        target_dir / "backend" / ".env",
         {
             "BACKEND_PORT": str(backend_port),
             "CORS_ALLOWED_ORIGINS": f"http://localhost:{frontend_port}",
@@ -166,7 +221,7 @@ if __name__ == "__main__":
     )
     update_env_file(
         frontend_example,
-        BASE_DIR / "frontend" / ".env",
+        target_dir / "frontend" / ".env",
         {
             "VITE_PORT": str(frontend_port),
             "VITE_API_URL": f"http://localhost:{backend_port}",
@@ -174,7 +229,7 @@ if __name__ == "__main__":
     )
     update_env_file(
         e2e_example,
-        BASE_DIR / "e2e-tests" / ".env",
+        target_dir / "e2e-tests" / ".env",
         {
             "BACKEND_PORT": str(backend_port),
             "FRONTEND_PORT": str(frontend_port),
@@ -183,9 +238,9 @@ if __name__ == "__main__":
         },
     )
 
-    # Rename backend project dir
-    old_dir = BASE_DIR / "backend" / "myproject"
-    new_dir = BASE_DIR / "backend" / snake
+    # Rename backend project dir in target
+    old_dir = target_dir / "backend" / "myproject"
+    new_dir = target_dir / "backend" / snake
     try:
         if old_dir.exists() and not new_dir.exists():
             old_dir.rename(new_dir)
@@ -195,11 +250,14 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"[WARN] Rename failed: {e}")
 
-    # Run Makefile-based setup to install dependencies
+    # Install dependencies in target via Makefile
     print("\n[SETUP] Installing dependencies via Makefile (make setup)...")
-    rc = os.system("make setup")
-    if rc != 0:
-        print("[WARN] 'make setup' failed. Please run it manually.")
+    try:
+        subprocess.run(["make", "setup"], cwd=str(target_dir), check=True)
+    except Exception as e:
+        print(
+            f"[WARN] 'make setup' failed: {e}. Please run it manually in {target_dir}."
+        )
 
     print("\nNext steps:")
     print("  • Environment files created with configured ports")
@@ -212,3 +270,4 @@ if __name__ == "__main__":
     print(f"  • Backend: http://localhost:{backend_port}")
     print(f"  • Frontend: http://localhost:{frontend_port}")
     print(f"  • Health: http://localhost:{frontend_port}/health")
+    print(f"  • Project location: {target_dir}")
