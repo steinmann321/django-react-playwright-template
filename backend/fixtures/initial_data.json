@@ -1,0 +1,9 @@
+[
+  {
+    "model": "health.healthexample",
+    "pk": 1,
+    "fields": {
+      "info": "this health check framework is meant to esablish a coding pattern. it must be fully removed or replaced with a project specific version before the application can be released. the second e2e is indended to fail to ensure this is not overseen. CRITICAL: remove me, delete or replace all heaöth check related production/tests/e2e code"
+    }
+  }
+]
