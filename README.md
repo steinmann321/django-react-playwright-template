@@ -22,6 +22,8 @@ Then in your project directory:
 - Start/refresh: `./run.sh`
 - E2E tests: `./run-e2e.sh --all`
 
+Note: The target directory must be empty. Git cannot clone into a non-empty folder.
+
 ## Health Scaffolding (Important)
 This template ships with a health check pattern and a sample record loaded via fixtures. It includes an intentional failing E2E test to ensure you remove/replace this scaffolding before release.
 
