@@ -20,9 +20,15 @@ for cmd in git python3 node make; do
   command -v "$cmd" >/dev/null || { echo "Missing dependency: $cmd"; exit 1; }
 done
 
+# Ensure safe working directory and parent dir
+cd "$HOME" 2>/dev/null || cd /tmp 2>/dev/null || true
+PARENT_DIR="$(dirname "$TARGET_DIR")"
+mkdir -p "$PARENT_DIR" || { echo "Cannot create parent directory: $PARENT_DIR"; exit 1; }
+if [[ ! -w "$PARENT_DIR" ]]; then echo "Parent directory not writable: $PARENT_DIR"; exit 1; fi
+
 # Clone into target
-git clone --depth 1 -b "$BRANCH" "$REPO" "$TARGET_DIR"
-cd "$TARGET_DIR"
+git clone --depth 1 -b "$BRANCH" "$REPO" "$TARGET_DIR" || { echo "git clone failed"; exit 1; }
+cd "$TARGET_DIR" || { echo "Cannot enter target directory: $TARGET_DIR"; exit 1; }
 
 # Interactive inputs (read from TTY to support curl-pipe)
 NAME=""; BACKEND_PORT=""; FRONTEND_PORT=""
