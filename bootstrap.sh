@@ -94,45 +94,61 @@ for root, dirs, files in os.walk(BASE_DIR):
                 pass
 print(f"Processed files: {count}")
 
-# Env files
-backend_example = BASE_DIR / "backend" / ".env.example"
-frontend_example = BASE_DIR / "frontend" / ".env.example"
-e2e_example = BASE_DIR / "e2e-tests" / ".env.example"
+# Env files: create or update real .env files directly
+from collections import OrderedDict
 
-def update_env(example: Path, env_path: Path, updates: dict):
+def read_env(path: Path) -> dict:
+    env = OrderedDict()
     try:
-        lines = example.read_text(encoding="utf-8").splitlines()
+        lines = path.read_text(encoding="utf-8").splitlines()
+        for line in lines:
+            if not line or line.strip().startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            env[k.strip()] = v.strip()
     except Exception:
-        return
-    new_lines = []
-    for line in lines:
-        if not line or line.strip().startswith("#") or "=" not in line:
-            new_lines.append(line)
-            continue
-        k, v = line.split("=", 1)
-        if k in updates:
-            new_lines.append(f"{k}={updates[k]}")
-        else:
-            new_lines.append(line)
+        pass
+    return env
+
+def write_env(path: Path, defaults: dict, updates: dict):
+    env = OrderedDict(defaults)
+    existing = read_env(path)
+    env.update(existing)
+    env.update({k: str(v) for k, v in updates.items()})
     try:
-        env_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+        content = "\n".join(f"{k}={v}" for k, v in env.items()) + "\n"
+        path.write_text(content, encoding="utf-8")
     except Exception:
         pass
 
-update_env(backend_example, BASE_DIR / "backend" / ".env", {
+backend_env = BASE_DIR / "backend" / ".env"
+frontend_env = BASE_DIR / "frontend" / ".env"
+e2e_env = BASE_DIR / "e2e-tests" / ".env"
+
+backend_defaults = {
+    "DEBUG": "True",
+    "SECRET_KEY": "dev-secret-key",
+    "ALLOWED_HOSTS": "localhost,127.0.0.1",
+    "DATABASE_URL": "sqlite:///db.sqlite3",
+    "FRONTEND_URL": f"http://localhost:{FRONTEND_PORT}",
+}
+frontend_defaults = {
+    "VITE_API_URL": f"http://localhost:{BACKEND_PORT}",
+    "VITE_PORT": str(FRONTEND_PORT),
+}
+e2e_defaults = {
+    "FRONTEND_URL": f"http://localhost:{FRONTEND_PORT}",
+    "BACKEND_URL": f"http://localhost:{BACKEND_PORT}",
+    "FRONTEND_PORT": str(FRONTEND_PORT),
+    "BACKEND_PORT": str(BACKEND_PORT),
+}
+
+write_env(backend_env, backend_defaults, {
     "BACKEND_PORT": str(BACKEND_PORT),
     "CORS_ALLOWED_ORIGINS": f"http://localhost:{FRONTEND_PORT}",
 })
-update_env(frontend_example, BASE_DIR / "frontend" / ".env", {
-    "VITE_PORT": str(FRONTEND_PORT),
-    "VITE_API_URL": f"http://localhost:{BACKEND_PORT}",
-})
-update_env(e2e_example, BASE_DIR / "e2e-tests" / ".env", {
-    "BACKEND_PORT": str(BACKEND_PORT),
-    "FRONTEND_PORT": str(FRONTEND_PORT),
-    "BACKEND_URL": f"http://localhost:{BACKEND_PORT}",
-    "FRONTEND_URL": f"http://localhost:{FRONTEND_PORT}",
-})
+write_env(frontend_env, frontend_defaults, {})
+write_env(e2e_env, e2e_defaults, {})
 
 # Rename backend package dir
 old_dir = BASE_DIR / "backend" / "myproject"
