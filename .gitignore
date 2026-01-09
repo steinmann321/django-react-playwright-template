@@ -10,3 +10,9 @@
 
 # OS
 Thumbs.db
+
+# Run script artifacts
+backend.log
+frontend.log
+backend.pid
+frontend.pid

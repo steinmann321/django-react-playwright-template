@@ -58,23 +58,25 @@ if [ -f "fixtures/initial_data.json" ]; then
   python manage.py loaddata fixtures/initial_data.json || true
 fi
 
-# Start backend
-python manage.py runserver "0.0.0.0:$BACKEND_PORT" &
+# Start backend (detached)
+nohup python manage.py runserver "0.0.0.0:$BACKEND_PORT" > ../backend.log 2>&1 &
 BACK_PID=$!
+echo $BACK_PID > ../backend.pid
 cd - >/dev/null
 
 info "Starting frontend (port $VITE_PORT)..."
 cd "$FRONTEND_DIR"
 # Assume node modules exist; do NOT install here
-npm run dev -- --port "$VITE_PORT" --host &
+nohup npm run dev -- --port "$VITE_PORT" --host > ../frontend.log 2>&1 &
 FRONT_PID=$!
+echo $FRONT_PID > ../frontend.pid
 cd - >/dev/null
 
-trap 'info "Stopping services..."; kill $BACK_PID $FRONT_PID 2>/dev/null || true; exit 0' INT
+# Wait a moment for servers to start
+sleep 2
 
-success "Backend: http://localhost:$BACKEND_PORT"
-success "Frontend: http://localhost:$VITE_PORT"
+success "Backend: http://localhost:$BACKEND_PORT (PID: $BACK_PID)"
+success "Frontend: http://localhost:$VITE_PORT (PID: $FRONT_PID)"
 success "Health page: http://localhost:$VITE_PORT/health"
-
-info "Press Ctrl+C to stop all services"
-wait
+info "Logs: backend.log, frontend.log"
+info "To stop: kill \$(cat backend.pid frontend.pid) or pkill -f 'manage.py runserver|vite'"
