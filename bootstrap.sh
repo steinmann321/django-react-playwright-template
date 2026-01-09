@@ -56,34 +56,16 @@ BACKEND_PORT = sys.argv[2]
 FRONTEND_PORT = sys.argv[3]
 BASE_DIR = Path.cwd()
 
-# Case conversions
-def to_kebab_case(name: str) -> str:
-    name = re.sub(r"[\s_]+", "-", name.strip())
-    name = re.sub(r"-+", "-", name)
-    return name.lower()
-
-def to_snake_case(name: str) -> str:
-    s = re.sub(r"[\s-]+", "_", name.strip())
-    s = re.sub(r"_+", "_", s)
-    return s.lower()
-
-def to_pascal_case(name: str) -> str:
-    parts = re.split(r"[\s_-]+", name.strip())
-    return "".join(p.capitalize() for p in parts if p)
-
-def to_upper_snake_case(name: str) -> str:
-    return to_snake_case(name).upper()
-
-kebab = to_kebab_case(NAME)
-snake = to_snake_case(NAME)
-pascal = to_pascal_case(NAME)
-upper_snake = to_upper_snake_case(NAME)
+# Use exact project name without whitespaces
+CLEAN = "".join(NAME.split())
+# Filesystem-safe package dir (no spaces, replace non-alphanum/_ with _)
+FS_SAFE = re.sub(r"[^0-9A-Za-z_]", "_", CLEAN)
 
 replacements = {
-    "myproject": snake,
-    "my-project": kebab,
-    "MyProject": pascal,
-    "MY_PROJECT": upper_snake,
+    "myproject": FS_SAFE,
+    "my-project": CLEAN,
+    "MyProject": CLEAN,
+    "MY_PROJECT": CLEAN.upper(),
     "My Project": NAME,
 }
 
@@ -154,7 +136,7 @@ update_env(e2e_example, BASE_DIR / "e2e-tests" / ".env", {
 
 # Rename backend package dir
 old_dir = BASE_DIR / "backend" / "myproject"
-new_dir = BASE_DIR / "backend" / snake
+new_dir = BASE_DIR / "backend" / FS_SAFE
 if old_dir.exists() and not new_dir.exists():
     try:
         old_dir.rename(new_dir)
