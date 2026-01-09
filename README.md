@@ -11,11 +11,13 @@ A production-ready starter that pairs a modern React frontend with a Django back
 ## Requirements
 - Python 3.14, Node.js 22, make (Unix‑like environments)
 
-## Quick Start (One Step)
-Create a new project (copies template, rebrands placeholders, writes env files, installs deps via Make):
+## Quick Start (Curl)
+Bootstrap a new project directly from GitHub (mandatory name prompt; ports have defaults):
 ```
-./create-project.sh
+curl -fsSL https://raw.githubusercontent.com/steinmann321/django-react-playwright-template/main/bootstrap.sh | bash -s -- /path/to/your-project
 ```
+The script clones into the target, prompts for your project name and ports (8000/5173 by default), rebrands placeholders, writes env files, renames the backend package, removes generator files, and installs dependencies via `make setup`.
+
 Then in your project directory:
 - Start/refresh: `./run.sh`
 - E2E tests: `./run-e2e.sh --all`
