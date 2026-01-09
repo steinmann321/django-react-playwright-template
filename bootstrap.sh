@@ -24,14 +24,14 @@ done
 git clone --depth 1 -b "$BRANCH" "$REPO" "$TARGET_DIR"
 cd "$TARGET_DIR"
 
-# Interactive inputs
-NAME=""
+# Interactive inputs (read from TTY to support curl-pipe)
+NAME="" BACKEND_PORT="" FRONTEND_PORT=""
 while [[ -z "$NAME" ]]; do
-  read -r -p "Project name (e.g., My Project): " NAME
+  read -r -p "Project name (e.g., My Project): " NAME < /dev/tty || true
   if [[ -z "$NAME" ]]; then echo "Project name is required."; fi
 done
-read -r -p "Backend port (default: 8000): " BACKEND_PORT || true
-read -r -p "Frontend port (default: 5173): " FRONTEND_PORT || true
+read -r -p "Backend port (default: 8000): " BACKEND_PORT < /dev/tty || true
+read -r -p "Frontend port (default: 5173): " FRONTEND_PORT < /dev/tty || true
 BACKEND_PORT=${BACKEND_PORT:-8000}
 FRONTEND_PORT=${FRONTEND_PORT:-5173}
 
