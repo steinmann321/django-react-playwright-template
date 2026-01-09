@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 # Bootstrap a new project directly from GitHub (clone into target and set up in place)
 # Interactive flow: project name is mandatory; ports have defaults.
@@ -25,22 +25,24 @@ git clone --depth 1 -b "$BRANCH" "$REPO" "$TARGET_DIR"
 cd "$TARGET_DIR"
 
 # Interactive inputs (read from TTY to support curl-pipe)
-NAME="" BACKEND_PORT="" FRONTEND_PORT=""
-while [[ -z "$NAME" ]]; do
-  read -r -p "Project name (e.g., My Project): " NAME < /dev/tty || true
+NAME=""; BACKEND_PORT=""; FRONTEND_PORT=""
+TTY="/dev/tty"
+if [[ ! -t 0 && -r "$TTY" ]]; then INPUT="$TTY"; else INPUT="/dev/stdin"; fi
+while [[ -z "${NAME}" ]]; do
+  read -r -p "Project name (e.g., My Project): " NAME < "$INPUT" || NAME=""
   if [[ -z "$NAME" ]]; then echo "Project name is required."; fi
 done
-read -r -p "Backend port (default: 8000): " BACKEND_PORT < /dev/tty || true
-read -r -p "Frontend port (default: 5173): " FRONTEND_PORT < /dev/tty || true
+read -r -p "Backend port (default: 8000): " BACKEND_PORT < "$INPUT" || BACKEND_PORT=""
+read -r -p "Frontend port (default: 5173): " FRONTEND_PORT < "$INPUT" || FRONTEND_PORT=""
 BACKEND_PORT=${BACKEND_PORT:-8000}
 FRONTEND_PORT=${FRONTEND_PORT:-5173}
 
 # Validate ports
 re='^[0-9]+$'
-if ! [[ $BACKEND_PORT =~ $re ]] || ((BACKEND_PORT < 1024 || BACKEND_PORT > 65535)); then
+if ! [[ "$BACKEND_PORT" =~ $re ]] || (( BACKEND_PORT < 1024 || BACKEND_PORT > 65535 )); then
   echo "Invalid backend port: $BACKEND_PORT"; exit 1
 fi
-if ! [[ $FRONTEND_PORT =~ $re ]] || ((FRONTEND_PORT < 1024 || FRONTEND_PORT > 65535)); then
+if ! [[ "$FRONTEND_PORT" =~ $re ]] || (( FRONTEND_PORT < 1024 || FRONTEND_PORT > 65535 )); then
   echo "Invalid frontend port: $FRONTEND_PORT"; exit 1
 fi
 
