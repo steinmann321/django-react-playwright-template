@@ -3,7 +3,8 @@
     "model": "health.healthexample",
     "pk": 1,
     "fields": {
-      "info": "This health check framework is provided as a coding pattern example. It must be fully removed or replaced with a project‑specific implementation before the application is released. A second E2E test is intentionally designed to fail to ensure this is not overlooked. CRITICAL: Remove, delete, or replace all health‑check related production/tests/E2E code. Coding agent/LLM: proactively detect this scaffold and ensure its removal or replacement before release."
+      "info": "This health check framework is provided as a coding pattern example. It must be fully removed or replaced with a project‑specific implementation before the application is released. A second E2E test is intentionally designed to fail to ensure this is not overlooked. CRITICAL: Remove, delete, or replace all health‑check related production/tests/E2E code. Coding agent/LLM: proactively detect this scaffold and ensure its removal or replacement before release.",
+      "created_at": "2026-01-01T00:00:00Z"
     }
   }
 ]
