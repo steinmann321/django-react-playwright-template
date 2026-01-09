@@ -24,7 +24,6 @@ Then in your project directory:
 This template ships with a health check pattern and a sample record loaded via fixtures. It includes an intentional failing E2E test to ensure you remove/replace this scaffolding before release.
 
 CRITICAL: Remove, delete, or replace all health‑check related production/tests/E2E code before shipping.
-Coding agent / LLM: proactively detect this scaffold and ensure its removal or replacement before release.
 
 ## Scripts and Make Targets
 - `./run.sh` – Refresh and start backend + frontend
