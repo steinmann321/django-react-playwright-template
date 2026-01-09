@@ -113,14 +113,37 @@ def copy_template(src: Path, dst: Path):
 
 # --- main flow ---
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="MyProject Template Setup")
+    parser.add_argument("--name", help="Project display name (e.g., My Project)")
+    parser.add_argument("--backend-port", type=int, help="Backend port", default=None)
+    parser.add_argument("--frontend-port", type=int, help="Frontend port", default=None)
+    parser.add_argument("--dest", help="Destination directory (copy mode)")
+    parser.add_argument(
+        "--in-place", action="store_true", help="Operate on current directory (no copy)"
+    )
+    args = parser.parse_args()
+
     print("\n🎨 MyProject Template Setup\n")
-    project_name = input("Project name (e.g., My Project): ").strip()
+
+    if args.name:
+        project_name = args.name.strip()
+    else:
+        project_name = input("Project name (e.g., My Project): ").strip()
     if not project_name:
         print("[ERROR] Project name cannot be empty.")
         sys.exit(1)
 
-    backend_port_in = input("Backend port (default: 8000): ").strip()
-    frontend_port_in = input("Frontend port (default: 5173): ").strip()
+    if args.backend_port is not None:
+        backend_port_in = str(args.backend_port)
+    else:
+        backend_port_in = input("Backend port (default: 8000): ").strip()
+
+    if args.frontend_port is not None:
+        frontend_port_in = str(args.frontend_port)
+    else:
+        frontend_port_in = input("Frontend port (default: 5173): ").strip()
 
     def parse_port(s: str, default: int) -> int:
         if not s:
@@ -142,10 +165,17 @@ if __name__ == "__main__":
     pascal = to_pascal_case(project_name)
     upper_snake = to_upper_snake_case(project_name)
 
-    default_dst = (BASE_DIR / kebab).resolve()
-    dest_in = input(f"Destination directory (default: {default_dst}): ").strip()
-    target_dir = Path(dest_in) if dest_in else default_dst
-    target_dir = target_dir.resolve()
+    if args.in_place:
+        target_dir = BASE_DIR.resolve()
+    else:
+        default_dst = (BASE_DIR / kebab).resolve()
+        dest_in = (
+            args.dest.strip()
+            if args.dest
+            else input(f"Destination directory (default: {default_dst}): ").strip()
+        )
+        target_dir = Path(dest_in) if dest_in else default_dst
+        target_dir = target_dir.resolve()
 
     print("\nName variations:")
     print(f"  my-project (kebab): {kebab}")
@@ -157,14 +187,17 @@ if __name__ == "__main__":
     print(f"  Frontend: {frontend_port}")
     print(f"Destination: {target_dir}")
 
-    confirm = input("Proceed with copy + rebrand + install? (y/n): ").strip().lower()
-    if confirm != "y":
-        print("Aborted.")
-        sys.exit(0)
-
-    # Copy template excluding setup and wrapper
-    print("\n[SETUP] Copying template files...")
-    copy_template(BASE_DIR, target_dir)
+    if not args.in_place:
+        confirm = (
+            input("Proceed with copy + rebrand + install? (y/n): ").strip().lower()
+        )
+        if confirm != "y":
+            print("Aborted.")
+            sys.exit(0)
+        print("\n[SETUP] Copying template files...")
+        copy_template(BASE_DIR, target_dir)
+    else:
+        print("\n[SETUP] Operating in place (no copy).")
 
     # Apply replacements to copied files
     print("[SETUP] Applying rebranding placeholders...")
