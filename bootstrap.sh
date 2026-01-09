@@ -5,15 +5,40 @@ set -eo pipefail
 # Interactive flow: project name is mandatory; ports have defaults.
 # Usage:
 #  curl -fsSL https://raw.githubusercontent.com/steinmann321/django-react-playwright-template/main/bootstrap.sh | bash -s -- /path/to/your-project
+#  OR with arguments (for testing):
+#  ./bootstrap.sh /path/to/your-project --name="My Project" --backend-port=8000 --frontend-port=5173
 
 REPO="https://github.com/steinmann321/django-react-playwright-template.git"
 BRANCH="main"
 
 if [[ $# -lt 1 ]]; then
-  echo "Usage: bootstrap.sh <target_dir>"
+  echo "Usage: bootstrap.sh <target_dir> [--name=NAME] [--backend-port=PORT] [--frontend-port=PORT]"
   exit 2
 fi
 TARGET_DIR="$1"
+shift
+
+# Parse optional arguments
+ARG_NAME=""
+ARG_BACKEND_PORT=""
+ARG_FRONTEND_PORT=""
+for arg in "$@"; do
+  case $arg in
+    --name=*)
+      ARG_NAME="${arg#*=}"
+      ;;
+    --backend-port=*)
+      ARG_BACKEND_PORT="${arg#*=}"
+      ;;
+    --frontend-port=*)
+      ARG_FRONTEND_PORT="${arg#*=}"
+      ;;
+    *)
+      echo "Unknown argument: $arg"
+      exit 2
+      ;;
+  esac
+done
 
 # Dependencies check
 for cmd in git python3 node make; do
@@ -29,16 +54,31 @@ if [[ ! -w "$PARENT_DIR" ]]; then echo "Parent directory not writable: $PARENT_D
 git -C "$PARENT_DIR" clone --depth 1 -b "$BRANCH" "$REPO" "$TARGET_NAME" || { echo "git clone failed"; exit 1; }
 cd "$PARENT_DIR/$TARGET_NAME" || { echo "Cannot enter target directory: $PARENT_DIR/$TARGET_NAME"; exit 1; }
 
-# Interactive inputs (read from TTY to support curl-pipe)
-NAME=""; BACKEND_PORT=""; FRONTEND_PORT=""
-TTY="/dev/tty"
-if [[ ! -t 0 && -r "$TTY" ]]; then INPUT="$TTY"; else INPUT="/dev/stdin"; fi
-while [[ -z "${NAME}" ]]; do
-  read -r -p "Project name (e.g., My Project): " NAME < "$INPUT" || NAME=""
-  if [[ -z "$NAME" ]]; then echo "Project name is required."; fi
-done
-read -r -p "Backend port (default: 8000): " BACKEND_PORT < "$INPUT" || BACKEND_PORT=""
-read -r -p "Frontend port (default: 5173): " FRONTEND_PORT < "$INPUT" || FRONTEND_PORT=""
+# Interactive inputs (read from TTY to support curl-pipe) - only prompt if args not provided
+NAME="${ARG_NAME}"
+BACKEND_PORT="${ARG_BACKEND_PORT}"
+FRONTEND_PORT="${ARG_FRONTEND_PORT}"
+
+if [[ -z "$NAME" || -z "$BACKEND_PORT" || -z "$FRONTEND_PORT" ]]; then
+  TTY="/dev/tty"
+  if [[ ! -t 0 && -r "$TTY" ]]; then INPUT="$TTY"; else INPUT="/dev/stdin"; fi
+
+  if [[ -z "$NAME" ]]; then
+    while [[ -z "${NAME}" ]]; do
+      read -r -p "Project name (e.g., My Project): " NAME < "$INPUT" || NAME=""
+      if [[ -z "$NAME" ]]; then echo "Project name is required."; fi
+    done
+  fi
+
+  if [[ -z "$BACKEND_PORT" ]]; then
+    read -r -p "Backend port (default: 8000): " BACKEND_PORT < "$INPUT" || BACKEND_PORT=""
+  fi
+
+  if [[ -z "$FRONTEND_PORT" ]]; then
+    read -r -p "Frontend port (default: 5173): " FRONTEND_PORT < "$INPUT" || FRONTEND_PORT=""
+  fi
+fi
+
 BACKEND_PORT=${BACKEND_PORT:-8000}
 FRONTEND_PORT=${FRONTEND_PORT:-5173}
 
