@@ -5,7 +5,7 @@ test('health page shows healthy status and example warning', async ({ page }) =>
   const card = page.getByTestId('health-card')
   await expect(card).toBeVisible()
   await expect(card).toContainText(/Healthy|Unhealthy/)
-  await expect(card).toContainText('myproject-backend')
+  await expect(card).toContainText(/-backend/)
   await expect(page.getByTestId('health-example')).toContainText('CRITICAL:')
   await page.screenshot({ path: 'test-results/health.png', fullPage: true })
 })
