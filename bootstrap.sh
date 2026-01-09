@@ -2,27 +2,18 @@
 set -euo pipefail
 
 # Bootstrap a new project directly from GitHub (clone into target and set up in place)
+# Interactive flow: project name is mandatory; ports have defaults.
 # Usage:
-#  curl -fsSL https://raw.githubusercontent.com/steinmann321/django-react-playwright-template/main/bootstrap.sh | bash -s -- /path/to/your-project [--name "My Project" --backend-port 8000 --frontend-port 5173]
+#  curl -fsSL https://raw.githubusercontent.com/steinmann321/django-react-playwright-template/main/bootstrap.sh | bash -s -- /path/to/your-project
 
 REPO="https://github.com/steinmann321/django-react-playwright-template.git"
 BRANCH="main"
 
 if [[ $# -lt 1 ]]; then
-  echo "Usage: bootstrap.sh <target_dir> [--name \"My Project\" --backend-port 8000 --frontend-port 5173]"
+  echo "Usage: bootstrap.sh <target_dir>"
   exit 2
 fi
-TARGET_DIR="$1"; shift || true
-
-NAME=""; BACKEND_PORT=""; FRONTEND_PORT=""
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --name) NAME="$2"; shift 2;;
-    --backend-port) BACKEND_PORT="$2"; shift 2;;
-    --frontend-port) FRONTEND_PORT="$2"; shift 2;;
-    *) echo "Unknown option: $1"; exit 2;;
-  esac
-done
+TARGET_DIR="$1"
 
 # Dependencies check
 for cmd in git python3 node make; do
@@ -33,19 +24,25 @@ done
 git clone --depth 1 -b "$BRANCH" "$REPO" "$TARGET_DIR"
 cd "$TARGET_DIR"
 
-# Gather inputs
-if [[ -z "$NAME" ]]; then
+# Interactive inputs
+NAME=""
+while [[ -z "$NAME" ]]; do
   read -r -p "Project name (e.g., My Project): " NAME
-fi
-if [[ -z "$BACKEND_PORT" ]]; then
-  read -r -p "Backend port (default: 8000): " BACKEND_PORT
-fi
-if [[ -z "$FRONTEND_PORT" ]]; then
-  read -r -p "Frontend port (default: 5173): " FRONTEND_PORT
-fi
-
+  if [[ -z "$NAME" ]]; then echo "Project name is required."; fi
+done
+read -r -p "Backend port (default: 8000): " BACKEND_PORT || true
+read -r -p "Frontend port (default: 5173): " FRONTEND_PORT || true
 BACKEND_PORT=${BACKEND_PORT:-8000}
 FRONTEND_PORT=${FRONTEND_PORT:-5173}
+
+# Validate ports
+re='^[0-9]+$'
+if ! [[ $BACKEND_PORT =~ $re ]] || ((BACKEND_PORT < 1024 || BACKEND_PORT > 65535)); then
+  echo "Invalid backend port: $BACKEND_PORT"; exit 1
+fi
+if ! [[ $FRONTEND_PORT =~ $re ]] || ((FRONTEND_PORT < 1024 || FRONTEND_PORT > 65535)); then
+  echo "Invalid frontend port: $FRONTEND_PORT"; exit 1
+fi
 
 # Run rebranding and env configuration via embedded Python
 python3 - <<'PY' "$NAME" "$BACKEND_PORT" "$FRONTEND_PORT"
