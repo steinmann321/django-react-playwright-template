@@ -7,8 +7,8 @@ FRONTEND_DIR := frontend
 E2E_DIR := e2e-tests
 VENV := $(BACKEND_DIR)/.venv
 
-# fluxid QA configuration
-FLUXID_QA_REPO := https://github.com/steinmann321/fluxid-qa.git
+# fluxid guard configuration
+FLUXID_GUARD_REPO := https://github.com/steinmann321/fluxid-guard.git
 
 setup: backend-venv backend-pip frontend-npm e2e-npm e2e-browsers
 	@echo "[MAKE] Setup complete"
@@ -52,12 +52,12 @@ guard:
 		echo "[MAKE]   - go-only (Go backend only)"; \
 		exit 1; \
 	fi
-	@echo "[MAKE] Cloning fluxid QA from GitHub..."
+	@echo "[MAKE] Cloning fluxid guard from GitHub..."
 	@TEMP_DIR=$$(mktemp -d) && \
-		git clone --quiet $(FLUXID_QA_REPO) "$$TEMP_DIR" && \
-		echo "[MAKE] Installing fluxid QA with preset: $(PRESET)" && \
+		git clone --quiet $(FLUXID_GUARD_REPO) "$$TEMP_DIR" && \
+		echo "[MAKE] Installing fluxid guard with preset: $(PRESET)" && \
 		cd "$$TEMP_DIR" && \
 		echo "y" | ./install.sh $(CURDIR) --preset $(PRESET) && \
 		cd $(CURDIR) && \
 		rm -rf "$$TEMP_DIR" && \
-		echo "[MAKE] fluxid QA installation complete (temporary files cleaned up)"
+		echo "[MAKE] fluxid guard installation complete (temporary files cleaned up)"
