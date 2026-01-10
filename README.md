@@ -35,6 +35,21 @@ CRITICAL: Remove, delete, or replace all health‑check related production/tests
 - `make setup` – Create venv, pip install, npm install, Playwright browsers
 - `make dev` – Shortcut for `./run.sh`
 - `make e2e` – Shortcut for `./run-e2e.sh --all`
+- `make guard PRESET=<preset>` – Optional: Install enterprise-grade QA enforcement (see below)
+
+## Optional: Enterprise QA Enforcement
+This template includes optional integration with [fluxid-guard](https://github.com/steinmann321/fluxid-guard), an enterprise-grade quality enforcement system with 49+ automated checks including:
+- Zero-tolerance linting, type checking (100% coverage), security scanning
+- Code duplication detection, dead code elimination, complexity limits
+- Automated test coverage enforcement (90% minimum)
+- Pre-commit hooks with fail-fast execution
+
+To enable QA enforcement after running `make setup`:
+```bash
+make guard PRESET=django-react-playwright-v2
+```
+
+This installs all QA tools and pre-commit hooks. Quality checks run automatically on every `git commit`. See the [fluxid-guard documentation](https://github.com/steinmann321/fluxid-guard) for complete rule list and configuration options.
 
 ## Tech Stack
 - Frontend: React 19, Vite 7, TypeScript, Tailwind 4, shadcn‑style components
