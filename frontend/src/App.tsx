@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
+import ComponentShowcase from '@/pages/ComponentShowcase'
 import HealthPage from '@/pages/HealthPage'
 import LanguageSelector from '@/components/LanguageSelector'
 import { Button } from '@/components/ui/button'
@@ -26,7 +27,7 @@ export default function App() {
         <LanguageSelector />
       </nav>
       <Routes>
-        <Route path="/" element={<div>Welcome. Visit the Health page.</div>} />
+        <Route path="/" element={<ComponentShowcase />} />
         <Route path="/health" element={<HealthPage />} />
       </Routes>
     </div>
