@@ -1,27 +1,27 @@
-import { defineConfig, devices } from '@playwright/test'
-import * as dotenv from 'dotenv'
-import * as path from 'path'
-import { fileURLToPath } from 'url'
+import { defineConfig, devices } from "@playwright/test";
+import * as dotenv from "dotenv";
+import * as path from "path";
+import { fileURLToPath } from "url";
 
 // Get __dirname equivalent in ES modules
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load .env file from e2e-tests directory
-dotenv.config({ path: path.resolve(__dirname, '.env') })
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
-const baseURL = process.env.FRONTEND_URL || `http://localhost:${process.env.FRONTEND_PORT || 5173}`
+const baseURL =
+  process.env.FRONTEND_URL ||
+  `http://localhost:${process.env.FRONTEND_PORT || 5173}`;
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   timeout: 30_000,
   retries: 0,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [["list"], ["html", { open: "never" }]],
   use: {
     baseURL,
-    trace: 'on-first-retry',
+    trace: "on-first-retry",
   },
-  projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-  ],
-})
+  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+});

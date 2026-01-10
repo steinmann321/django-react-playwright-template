@@ -1,0 +1,10 @@
+rules:
+  - id: typescript.no-hardcoded-credentials
+    patterns:
+      - pattern-either:
+          - pattern: const password = "..."
+          - pattern: const apiKey = "..."
+          - pattern: const secret = "..."
+    message: Avoid hardcoding credentials; use environment variables.
+    languages: [typescript]
+    severity: ERROR

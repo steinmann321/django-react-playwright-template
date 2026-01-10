@@ -1,29 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap");
 @import "tailwindcss";
 @source "../src/**/*.{ts,tsx}";
 @source "../index.html";
 
 @theme {
   /* Cyberpunk Neon Theme */
-  --color-background: hsl(280 70% 12%);  /* Deep purple */
+  --color-background: hsl(280 70% 12%); /* Deep purple */
   --color-foreground: hsl(150 100% 85%); /* Neon mint */
-  --color-muted: hsl(280 50% 20%);       /* Dark purple muted */
+  --color-muted: hsl(280 50% 20%); /* Dark purple muted */
   --color-muted-foreground: hsl(280 30% 60%); /* Light purple */
-  --color-accent: hsl(45 100% 60%);      /* Electric yellow */
+  --color-accent: hsl(45 100% 60%); /* Electric yellow */
   --color-accent-foreground: hsl(280 80% 10%); /* Dark purple text */
-  --color-primary: hsl(330 100% 65%);    /* Hot pink/magenta */
+  --color-primary: hsl(330 100% 65%); /* Hot pink/magenta */
   --color-primary-foreground: hsl(280 80% 10%); /* Dark text */
-  --color-secondary: hsl(280 50% 25%);   /* Secondary purple */
+  --color-secondary: hsl(280 50% 25%); /* Secondary purple */
   --color-secondary-foreground: hsl(150 100% 85%);
   --color-destructive: hsl(15 100% 65%); /* Neon orange/coral */
   --color-destructive-foreground: hsl(280 80% 10%);
-  --color-card: hsl(280 60% 15%);        /* Slightly lighter purple */
+  --color-card: hsl(280 60% 15%); /* Slightly lighter purple */
   --color-card-foreground: hsl(180 100% 80%); /* Cyan text */
-  --color-popover: hsl(280 65% 18%);     /* Popover background */
+  --color-popover: hsl(280 65% 18%); /* Popover background */
   --color-popover-foreground: hsl(180 100% 80%);
-  --color-border: hsl(330 80% 50%);      /* Hot pink border */
+  --color-border: hsl(330 80% 50%); /* Hot pink border */
   --color-input: hsl(280 50% 20%);
-  --color-ring: hsl(150 100% 60%);       /* Neon green ring */
+  --color-ring: hsl(150 100% 60%); /* Neon green ring */
 }
 
 :root {
@@ -66,19 +66,32 @@
   --card-foreground: 180 100% 85%;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Space Grotesk",
+    system-ui,
+    -apple-system,
+    sans-serif;
   text-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Space Grotesk", sans-serif;
   font-weight: 700;
-  text-shadow: 0 0 30px rgba(255, 0, 255, 0.5), 0 0 60px rgba(0, 255, 255, 0.3);
+  text-shadow:
+    0 0 30px rgba(255, 0, 255, 0.5),
+    0 0 60px rgba(0, 255, 255, 0.3);
   letter-spacing: 0.05em;
 }

@@ -1,0 +1,12 @@
+[importlinter]
+root_packages =
+    health
+    wordtrainer
+include_external_packages = False
+
+[importlinter:contract:1]
+name = No circular imports
+type = independence
+modules =
+    health
+    wordtrainer

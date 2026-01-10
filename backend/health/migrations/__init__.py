@@ -1,9 +1,11 @@
+from typing import Any, ClassVar
+
 from django.db import migrations
 
 
 class Migration(migrations.Migration):
-    dependencies = [
+    dependencies: ClassVar[list[Any]] = [
         ("health", "0001_initial"),
     ]
 
-    operations = []
+    operations: ClassVar[list[Any]] = []

@@ -1,0 +1,1 @@
+/Users/jakob.steinmann/IdeaProjects/word-trainer-simple/AGENTS.md

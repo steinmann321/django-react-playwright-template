@@ -1,0 +1,10 @@
+rules:
+  - id: python.no-hardcoded-credentials
+    patterns:
+      - pattern-either:
+          - pattern: password = "..."
+          - pattern: api_key = "..."
+          - pattern: secret = "..."
+    message: Avoid hardcoding credentials; use environment variables.
+    languages: [python]
+    severity: ERROR

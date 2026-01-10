@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Switch } from '@/components/ui/switch'
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -20,32 +20,35 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs'
+} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+} from "@/components/ui/tooltip";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function ComponentShowcase() {
-  const [checked, setChecked] = useState(false)
-  const [switched, setSwitched] = useState(false)
+  const [checked, setChecked] = useState(false);
+  const [switched, setSwitched] = useState(false);
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold mb-2">shadcn/ui Component Showcase</h1>
+        <h1 className="text-4xl font-bold mb-2">
+          shadcn/ui Component Showcase
+        </h1>
         <p className="text-muted-foreground">
           Cyberpunk neon theme with all commonly used components
         </p>
@@ -114,14 +117,22 @@ export default function ComponentShowcase() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center space-x-2">
-            <Checkbox id="terms" checked={checked} onCheckedChange={(c) => setChecked(!!c)} />
+            <Checkbox
+              id="terms"
+              checked={checked}
+              onCheckedChange={(c) => setChecked(!!c)}
+            />
             <Label htmlFor="terms" className="cursor-pointer">
               Accept terms and conditions
             </Label>
           </div>
 
           <div className="flex items-center space-x-2">
-            <Switch id="airplane-mode" checked={switched} onCheckedChange={setSwitched} />
+            <Switch
+              id="airplane-mode"
+              checked={switched}
+              onCheckedChange={setSwitched}
+            />
             <Label htmlFor="airplane-mode" className="cursor-pointer">
               Airplane Mode
             </Label>
@@ -167,9 +178,7 @@ export default function ComponentShowcase() {
               </p>
             </TabsContent>
             <TabsContent value="settings" className="space-y-2">
-              <p className="text-sm">
-                Configure your application preferences.
-              </p>
+              <p className="text-sm">Configure your application preferences.</p>
             </TabsContent>
           </Tabs>
         </CardContent>
@@ -190,8 +199,8 @@ export default function ComponentShowcase() {
               <DialogHeader>
                 <DialogTitle>Are you absolutely sure?</DialogTitle>
                 <DialogDescription>
-                  This action cannot be undone. This will permanently delete your account
-                  and remove your data from our servers.
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
@@ -237,7 +246,7 @@ export default function ComponentShowcase() {
             </AlertDescription>
           </Alert>
 
-          <Alert variant="destructive">
+          <Alert className="border-destructive">
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>
               Something went wrong. Please try again.
@@ -246,5 +255,5 @@ export default function ComponentShowcase() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

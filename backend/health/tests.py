@@ -1,13 +1,14 @@
 from django.test import TestCase
 from django.urls import reverse
+
 from .models import HealthExample
 
 
 class HealthTests(TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         HealthExample.objects.create(info="test info")
 
-    def test_health_endpoint(self):
+    def test_health_endpoint(self) -> None:
         url = reverse("health")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)

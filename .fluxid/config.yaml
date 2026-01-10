@@ -1,0 +1,9 @@
+agent: claude
+implement_retries: 100
+commit_retries: 100
+iterations: 20
+
+commands:
+  implement: /Users/jakob.steinmann/IdeaProjects/word-trainer-simple/.fluxid/commands/fluxid.implement.md
+  review: /Users/jakob.steinmann/IdeaProjects/word-trainer-simple/.fluxid/commands/fluxid.review.md
+  commit: /Users/jakob.steinmann/IdeaProjects/word-trainer-simple/.fluxid/commands/fluxid.commit.md
