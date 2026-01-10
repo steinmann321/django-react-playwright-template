@@ -1,0 +1,131 @@
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "F",
+    "E",
+    "W",
+    "C90",
+    "I",
+    "N",
+    "UP",
+    "B",
+    "A",
+    "COM",
+    "DTZ",
+    "EXE",
+    "G",
+    "PIE",
+    "Q",
+    "RUF",
+    "T20",
+    "SIM",
+    "ARG",
+    "PTH",
+    "PL",
+    "PERF",
+    "FURB",
+    "RET",
+    "TRY",
+]
+ignore = [
+    "E203",
+    "COM812",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "backend.settings"
+python_files = [
+    "test_*.py",
+    "*_test.py",
+    "tests.py",
+]
+python_classes = [
+    "Test*",
+]
+python_functions = [
+    "test_*",
+]
+testpaths = [
+    ".",
+]
+addopts = "--strict-markers --reuse-db"
+markers = [
+    "tdd_green: Mark test as passing TDD test",
+    "tdd_red: Mark test as failing TDD test",
+    "tdd_refactor: Mark test for TDD refactoring phase",
+]
+
+[tool.coverage.run]
+source = [
+    ".",
+]
+data_file = "../.tmp/coverage/backend/.coverage"
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "*/test_*.py",
+    "*_test.py",
+    "*/__pycache__/*",
+    "manage.py",
+    "*/wsgi.py",
+    "*/asgi.py",
+    "*/.venv/*",
+    "conftest.py",
+    "*/management/commands/*",
+]
+branch = true
+
+[tool.coverage.report]
+precision = 2
+skip_empty = true
+show_missing = true
+fail_under = 90.0
+
+[tool.coverage.html]
+directory = "../.tmp/coverage/backend"
+
+[tool.mypy]
+plugins = [
+    "mypy_django_plugin.main",
+]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+exclude = [
+    "migrations/",
+    ".venv/",
+]
+
+[tool.django-stubs]
+django_settings_module = "backend.settings"
+
+[tool.vulture]
+min_confidence = 80
+paths = [
+    ".",
+]
+exclude = [
+    "migrations/",
+    ".venv/",
+    "manage.py",
+]
+
+[tool.importlinter]
+root_package = "backend"
+
+[[tool.importlinter.contracts]]
+name = "Backend layering"
+type = "layers"
+layers = [
+    "backend",
+]

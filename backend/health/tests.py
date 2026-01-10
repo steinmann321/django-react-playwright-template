@@ -14,5 +14,5 @@ class HealthTests(TestCase):
         data = resp.json()
         self.assertEqual(data["status"], "healthy")
         self.assertIn("timestamp", data)
-        self.assertEqual(data["service"], "myproject-backend")
+        self.assertEqual(data["service"], "wordtrainer-backend")
         self.assertTrue(len(data.get("examples", [])) >= 1)

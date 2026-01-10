@@ -25,7 +25,7 @@ class HealthView(APIView):
         payload = {
             "status": "healthy",
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "service": "myproject-backend",
+            "service": "wordtrainer-backend",
             "examples": example_data,
         }
         return Response(payload, status=status.HTTP_200_OK)

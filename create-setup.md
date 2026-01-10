@@ -8,10 +8,10 @@ Create a reusable full-stack template with React frontend, Django backend, and P
 ## Directory Structure
 
 ```
-myproject/
+wordtrainer/
 ├── backend/
 │   ├── .venv/                    # Python virtual environment (gitignored)
-│   ├── myproject/                # Django project directory
+│   ├── wordtrainer/                # Django project directory
 │   │   ├── __init__.py
 │   │   ├── settings.py
 │   │   ├── urls.py
@@ -135,11 +135,11 @@ myproject/
 ## Placeholder Naming Convention
 
 Use consistent placeholders throughout:
-- `myproject` - Python module names, lowercase
-- `my-project` - npm package names, kebab-case
-- `MyProject` - PascalCase for classes
-- `MY_PROJECT` - Environment variables, UPPER_SNAKE_CASE
-- `My Project` - Human-readable display names
+- `wordtrainer` - Python module names, lowercase
+- `wordtrainer` - npm package names, kebab-case
+- `wordtrainer` - PascalCase for classes
+- `WORDTRAINER` - Environment variables, UPPER_SNAKE_CASE
+- `word trainer` - Human-readable display names
 
 ## Implementation Steps
 
@@ -157,7 +157,7 @@ Use consistent placeholders throughout:
   psycopg2-binary==2.9.11
   ```
 - Activate venv and install: `source .venv/bin/activate && pip install -r requirements.txt`
-- Initialize Django project: `django-admin startproject myproject .`
+- Initialize Django project: `django-admin startproject wordtrainer .`
 - Create health app: `python manage.py startapp health`
 
 #### 1.2 Configure Django Settings
@@ -172,7 +172,7 @@ Use consistent placeholders throughout:
 
 #### 1.3 Health Check Implementation
 - Create `/api/health/` endpoint in `health/views.py`:
-  - Return JSON: `{"status": "healthy", "timestamp": "ISO8601", "service": "myproject-backend"}`
+  - Return JSON: `{"status": "healthy", "timestamp": "ISO8601", "service": "wordtrainer-backend"}`
   - Use DRF APIView or simple JsonResponse
   - Add database connectivity check
   - Return 200 status code
@@ -202,7 +202,7 @@ Use consistent placeholders throughout:
 #### 2.1 Initialize Vite + React + TypeScript
 - Create `frontend/` directory
 - Initialize: `npm create vite@latest . -- --template react-ts`
-- Update `package.json` name to `my-project-frontend`
+- Update `package.json` name to `wordtrainer-frontend`
 - Install dependencies: `npm install`
 
 #### 2.2 Install Tailwind CSS
@@ -258,7 +258,7 @@ Use consistent placeholders throughout:
 #### 3.1 Initialize Playwright
 - Create `e2e-tests/` directory
 - Initialize: `npm init -y`
-- Update `package.json` name to `my-project-e2e`
+- Update `package.json` name to `wordtrainer-e2e`
 - Install Playwright: `npm install -D @playwright/test@1.57.0`
 - Initialize config: `npx playwright install`
 - Install browsers: `npx playwright install chromium`
@@ -395,10 +395,10 @@ chmod +x run.sh run-e2e.sh
 
 **Name Conversion Functions**:
 Create helper functions to convert project name to different cases:
-- `to_kebab_case()`: Convert to kebab-case (e.g., "my-project")
-- `to_snake_case()`: Convert to snake_case (e.g., "myproject")
-- `to_pascal_case()`: Convert to PascalCase (e.g., "MyProject")
-- `to_upper_snake_case()`: Convert to UPPER_SNAKE_CASE (e.g., "MY_PROJECT")
+- `to_kebab_case()`: Convert to kebab-case (e.g., "wordtrainer")
+- `to_snake_case()`: Convert to snake_case (e.g., "wordtrainer")
+- `to_pascal_case()`: Convert to PascalCase (e.g., "wordtrainer")
+- `to_upper_snake_case()`: Convert to UPPER_SNAKE_CASE (e.g., "WORDTRAINER")
 
 **File Processing Functions**:
 - `replace_in_file(file_path, replacements)`:
@@ -415,7 +415,7 @@ Create helper functions to convert project name to different cases:
 **Main Script Flow**:
 
 1. **User Input - Project Name**:
-   - Display welcome message: "🎨 MyProject Template Setup"
+   - Display welcome message: "🎨 wordtrainer Template Setup"
    - Prompt user for project name
    - Exit with error if name is empty
 
@@ -436,11 +436,11 @@ Create helper functions to convert project name to different cases:
 
 5. **Create Replacements Dictionary**:
    ```
-   'myproject' → snake_case version
-   'my-project' → kebab-case version
-   'MyProject' → PascalCase version
-   'MY_PROJECT' → UPPER_SNAKE_CASE version
-   'My Project' → original input
+   'wordtrainer' → snake_case version
+   'wordtrainer' → kebab-case version
+   'wordtrainer' → PascalCase version
+   'WORDTRAINER' → UPPER_SNAKE_CASE version
+   'word trainer' → original input
    ```
 
 6. **Process Files**:
@@ -464,7 +464,7 @@ Create helper functions to convert project name to different cases:
      - `FRONTEND_URL` with `http://localhost:{frontend_port}`
 
 8. **Rename Backend Directory**:
-   - Check if `backend/myproject/` directory exists
+   - Check if `backend/wordtrainer/` directory exists
    - Rename it to `backend/<snake_case_name>/`
    - Display old → new name
 

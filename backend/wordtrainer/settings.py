@@ -38,7 +38,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "myproject.urls"
+ROOT_URLCONF = "wordtrainer.urls"
 
 TEMPLATES = [
     {
@@ -56,8 +56,8 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = "myproject.wsgi.application"
-ASGI_APPLICATION = "myproject.asgi.application"
+WSGI_APPLICATION = "wordtrainer.wsgi.application"
+ASGI_APPLICATION = "wordtrainer.asgi.application"
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///db.sqlite3")
 if DATABASE_URL.startswith("sqlite"):

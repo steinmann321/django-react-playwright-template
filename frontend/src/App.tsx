@@ -10,7 +10,7 @@ export default function App() {
   const { t } = useI18n()
 
   useEffect(() => {
-    document.title = 'My Project'
+    document.title = 'word trainer'
   }, [])
 
   return (
