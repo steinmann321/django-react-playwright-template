@@ -11,8 +11,71 @@
 # OS
 Thumbs.db
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+.env
+
+# Node
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Vite
+dist/
+dist-ssr/
+.vite/
+*.local
+
+# Playwright / E2E
+test-results/
+playwright-report/
+playwright/.cache/
+playwright-report.html
+
+# Tailwind (if auto-generated)
+tailwind.config.ts
+
 # Run script artifacts
 backend.log
 frontend.log
 backend.pid
 frontend.pid
+nohup.out
+
+# Test/Bootstrap temporary directories
+_prove_e2e/
+_prove_e2e_out/
+_validate_bootstrap/
+_verify_remote_bootstrap_*/
+_verify_word_trainer_*/
+_*bootstrap*/
+
+# Lock files (optional - some teams commit these)
+# Uncomment if you don't want to track lock files:
+# frontend/package-lock.json
+# e2e-tests/package-lock.json
+# backend/poetry.lock
