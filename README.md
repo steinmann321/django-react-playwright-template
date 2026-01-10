@@ -35,11 +35,11 @@ CRITICAL: Remove, delete, or replace all health‑check related production/tests
 - `make setup` – Create venv, pip install, npm install, Playwright browsers
 - `make dev` – Shortcut for `./run.sh`
 - `make e2e` – Shortcut for `./run-e2e.sh --all`
-- `make guard PRESET=<preset>` – Optional: Install enterprise-grade QA enforcement (see below)
+- `make guard PRESET=<preset>` – Optional: Install QA enforcement (see below)
 
-## Optional: Enterprise QA Enforcement
-This template includes optional integration with [fluxid-guard](https://github.com/steinmann321/fluxid-guard), an enterprise-grade quality enforcement system with 49+ automated checks including:
-- Zero-tolerance linting, type checking (100% coverage), security scanning
+## Optional: QA Enforcement
+This template includes optional integration with [fluxid-guard](https://github.com/steinmann321/fluxid-guard), a quality enforcement system with 49+ automated checks including:
+- Linting, type checking (100% coverage), security scanning
 - Code duplication detection, dead code elimination, complexity limits
 - Automated test coverage enforcement (90% minimum)
 - Pre-commit hooks with fail-fast execution
