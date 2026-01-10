@@ -1,5 +1,7 @@
 # wordtrainer Full-Stack Template
 
+> **QA Validated Branch** - This version has passed full pre-commit checks on all files
+
 A production-ready starter that pairs a modern React frontend with a Django backend and Playwright end‑to‑end tests. It includes a working health check that exercises the full stack, shadcn‑style UI components, and developer helpers for fast local iteration.
 
 ## What You Get
