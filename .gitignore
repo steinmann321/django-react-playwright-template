@@ -1,6 +1,10 @@
-# Root Gitignore
+# ============================================================================
+# Root .gitignore for Django + React + Playwright + fluxid QA Architecture
+# ============================================================================
 
-# IDEs
+# ──────────────────────────────────────────────────────────────────────────
+# IDE & Editor Files
+# ──────────────────────────────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
@@ -8,24 +12,41 @@
 *~
 .DS_Store
 
-# OS
+# ──────────────────────────────────────────────────────────────────────────
+# Operating System Files
+# ──────────────────────────────────────────────────────────────────────────
 Thumbs.db
+.DS_Store
 
-# Python
+# ──────────────────────────────────────────────────────────────────────────
+# Python / Django Backend
+# ──────────────────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
 .venv/
 venv/
 ENV/
 env/
-*.egg-info/
-.pytest_cache/
-.mypy_cache/
-.coverage
-htmlcov/
 
 # Django
 *.log
@@ -34,39 +55,83 @@ db.sqlite3-journal
 staticfiles/
 media/
 .env
+*.pid
 
-# Node
+# Python Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage/
+*.cover
+.hypothesis/
+
+# Python Linting & Type Checking
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+dmypy.json
+
+# ──────────────────────────────────────────────────────────────────────────
+# Node / React / TypeScript Frontend
+# ──────────────────────────────────────────────────────────────────────────
 node_modules/
-package-lock.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 .pnpm-store/
+lerna-debug.log*
 
-# Vite
+# Build Outputs
 dist/
 dist-ssr/
 .vite/
 *.local
 
-# Playwright / E2E
+# Frontend Linting & Testing
+.eslintcache
+.stylelintcache
+.vitest/
+
+# ──────────────────────────────────────────────────────────────────────────
+# Playwright / E2E Testing
+# ──────────────────────────────────────────────────────────────────────────
 test-results/
 playwright-report/
 playwright/.cache/
 playwright-report.html
 
-# Tailwind (if auto-generated)
-tailwind.config.ts
+# ──────────────────────────────────────────────────────────────────────────
+# fluxid QA - Hook Framework Artifacts
+# ──────────────────────────────────────────────────────────────────────────
+# Backup directories created by fluxid during updates
+.hooks-backup-*/
+*.backup
+*.bak
 
-# Run script artifacts
+# Temporary fluxid installation files (if any)
+.tmp/
+tmp/
+temp/
+*.tmp
+
+# ──────────────────────────────────────────────────────────────────────────
+# Run Scripts & Process Management
+# ──────────────────────────────────────────────────────────────────────────
 backend.log
 frontend.log
 backend.pid
 frontend.pid
 nohup.out
+*.seed
+*.pid.lock
 
-# Test/Bootstrap temporary directories
+# ──────────────────────────────────────────────────────────────────────────
+# Test & Bootstrap Temporary Directories
+# ──────────────────────────────────────────────────────────────────────────
 _prove_e2e/
 _prove_e2e_out/
 _validate_bootstrap/
@@ -74,8 +139,41 @@ _verify_remote_bootstrap_*/
 _verify_word_trainer_*/
 _*bootstrap*/
 
-# Lock files (optional - some teams commit these)
-# Uncomment if you don't want to track lock files:
+# ──────────────────────────────────────────────────────────────────────────
+# Environment Files (CRITICAL: Never commit secrets)
+# ──────────────────────────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+*.crt
+
+# ──────────────────────────────────────────────────────────────────────────
+# Logs
+# ──────────────────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ──────────────────────────────────────────────────────────────────────────
+# Optional: Lock Files
+# ──────────────────────────────────────────────────────────────────────────
+# Uncomment if your team doesn't commit lock files:
+# package-lock.json
 # frontend/package-lock.json
 # e2e-tests/package-lock.json
 # backend/poetry.lock
+
+# ──────────────────────────────────────────────────────────────────────────
+# IMPORTANT: Files to COMMIT (not ignore)
+# ──────────────────────────────────────────────────────────────────────────
+# The following fluxid QA files MUST be committed:
+#   .hooks/                      - Hook scripts (read-only)
+#   .pre-commit-config.yaml     - Pre-commit framework config
+#   .gitleaks.toml              - Secrets detection config
+#   .jscpdrc                    - Code duplication config
+#   .semgrep/                   - Security pattern rules
+#   backend/pyproject.toml      - Python tool configurations
+#   frontend/eslint.config.js   - ESLint configuration
+#   frontend/tsconfig.json      - TypeScript configuration

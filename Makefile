@@ -1,11 +1,14 @@
 SHELL := /bin/bash
 
-.PHONY: setup backend-venv backend-pip frontend-npm e2e-npm e2e-browsers dev e2e clean
+.PHONY: setup backend-venv backend-pip frontend-npm e2e-npm e2e-browsers dev e2e clean guard
 
 BACKEND_DIR := backend
 FRONTEND_DIR := frontend
 E2E_DIR := e2e-tests
 VENV := $(BACKEND_DIR)/.venv
+
+# fluxid QA configuration
+FLUXID_QA_REPO := https://github.com/steinmann321/fluxid-qa.git
 
 setup: backend-venv backend-pip frontend-npm e2e-npm e2e-browsers
 	@echo "[MAKE] Setup complete"
@@ -35,3 +38,26 @@ e2e:
 clean:
 	@rm -f $(BACKEND_DIR)/db.sqlite3
 	@rm -rf $(FRONTEND_DIR)/node_modules $(E2E_DIR)/node_modules
+
+# fluxid QA installation
+guard:
+	@if [ -z "$(PRESET)" ]; then \
+		echo "[MAKE] ERROR: PRESET parameter is required"; \
+		echo "[MAKE] Usage: make guard PRESET=<preset-name>"; \
+		echo "[MAKE]"; \
+		echo "[MAKE] Available presets:"; \
+		echo "[MAKE]   - django-react-playwright-v2 (full-stack with Django, React, Playwright)"; \
+		echo "[MAKE]   - django-react-playwright (legacy)"; \
+		echo "[MAKE]   - django-only (Django backend only)"; \
+		echo "[MAKE]   - go-only (Go backend only)"; \
+		exit 1; \
+	fi
+	@echo "[MAKE] Cloning fluxid QA from GitHub..."
+	@TEMP_DIR=$$(mktemp -d) && \
+		git clone --quiet $(FLUXID_QA_REPO) "$$TEMP_DIR" && \
+		echo "[MAKE] Installing fluxid QA with preset: $(PRESET)" && \
+		cd "$$TEMP_DIR" && \
+		echo "y" | ./install.sh $(CURDIR) --preset $(PRESET) && \
+		cd $(CURDIR) && \
+		rm -rf "$$TEMP_DIR" && \
+		echo "[MAKE] fluxid QA installation complete (temporary files cleaned up)"
