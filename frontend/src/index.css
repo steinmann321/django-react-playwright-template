@@ -13,10 +13,14 @@
   --color-accent-foreground: hsl(280 80% 10%); /* Dark purple text */
   --color-primary: hsl(330 100% 65%);    /* Hot pink/magenta */
   --color-primary-foreground: hsl(280 80% 10%); /* Dark text */
+  --color-secondary: hsl(280 50% 25%);   /* Secondary purple */
+  --color-secondary-foreground: hsl(150 100% 85%);
   --color-destructive: hsl(15 100% 65%); /* Neon orange/coral */
   --color-destructive-foreground: hsl(280 80% 10%);
   --color-card: hsl(280 60% 15%);        /* Slightly lighter purple */
   --color-card-foreground: hsl(180 100% 80%); /* Cyan text */
+  --color-popover: hsl(280 65% 18%);     /* Popover background */
+  --color-popover-foreground: hsl(180 100% 80%);
   --color-border: hsl(330 80% 50%);      /* Hot pink border */
   --color-input: hsl(280 50% 20%);
   --color-ring: hsl(150 100% 60%);       /* Neon green ring */
@@ -32,10 +36,14 @@
   --accent-foreground: 280 80% 10%;
   --primary: 330 100% 65%;
   --primary-foreground: 280 80% 10%;
+  --secondary: 280 50% 25%;
+  --secondary-foreground: 150 100% 85%;
   --destructive: 15 100% 65%;
   --destructive-foreground: 280 80% 10%;
   --card: 280 60% 15%;
   --card-foreground: 180 100% 80%;
+  --popover: 280 65% 18%;
+  --popover-foreground: 180 100% 80%;
   --border: 330 80% 50%;
   --input: 280 50% 20%;
   --ring: 150 100% 60%;
