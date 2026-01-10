@@ -177,7 +177,7 @@ repos:
 
       - id: frontend-eslint
         name: frontend — eslint
-        entry: bash -c 'cd frontend && ./node_modules/.bin/eslint . --max-warnings=0 || [ $? -eq 2 ] && exit 0 || exit $?'
+        entry: bash -c 'cd frontend && ./node_modules/.bin/eslint . --max-warnings=0'
         language: system
         pass_filenames: false
         files: '^frontend/.*\.(ts|tsx)$'
@@ -216,7 +216,7 @@ repos:
 
       - id: frontend-type-coverage
         name: frontend — type coverage (100%)
-        entry: bash -c 'cd frontend && [ -f ./node_modules/.bin/type-coverage ] && ./node_modules/.bin/type-coverage --project tsconfig.json --strict --detail --ignore-files "**/*.test.*" "**/*.spec.*" --target 100 --cache-directory ../.tmp/type-coverage/frontend || exit 0'
+        entry: bash -c 'cd frontend && [ -f ./node_modules/.bin/type-coverage ] && ./node_modules/.bin/type-coverage --project tsconfig.json --strict --detail --target 100 --cache-directory ../.tmp/type-coverage/frontend || exit 0'
         language: system
         pass_filenames: false
         files: '^frontend/src/.*\.(ts|tsx)$'
